@@ -1,25 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import {Header} from "./components/Header/Header";
+import React from "react";
+import {WebSockets} from "./components/WebSockets/WebSockets";
+import {Ping} from "./components/Ping/Ping";
+import {Redirect, BrowserRouter, Route, Switch} from 'react-router-dom'
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <div className="App">
+                <Header/>
+                <Switch>
+                    <Route exact path='/websockets'
+                           component={WebSockets}/>
+                    <Route exact path='/ping'
+                           component={Ping}/>
+                    <Redirect exact from={'/'} to={'/websockets'}/>
+
+                    <Route path={ '/404' } render={ () => <h1>404: PAGE NOT FOUND</h1> }/>
+                    <Redirect from={'*'} to={'/404'}/>
+                </Switch>
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App;
