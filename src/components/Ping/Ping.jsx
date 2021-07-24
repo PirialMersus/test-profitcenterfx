@@ -4,7 +4,7 @@ import React from "react";
 export const Ping = () => {
     return (
         <div className={s.container}>
-            ping
+            <h2>Ping</h2>
         </div>
     )
 }
