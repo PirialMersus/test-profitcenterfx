@@ -1,3 +1,45 @@
 .container {
+  h2 {
+    margin: 10px;
+  }
+  .inputs{
+    input {
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 10px;
+      margin-right: 10px;
+      min-width: 200px;
+    }
 
+  }
+  .results {
+    padding: 10px;
+    .result{
+      font-weight: 600;
+    }
+    .error {
+      color: #ff0233;
+    }
+  }
+  button {
+    border: 1px solid black;
+    background-color: grey;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 30px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    &:hover {
+      background-color: white;
+      color: black;
+    }
+    &:focus {
+      background-color: yellow;
+      color: black;
+      &:hover{
+        color: #f85672;
+      }
+    }
+  }
 }
