@@ -2,6 +2,7 @@ import s from './Ping.module.scss'
 import React, {useEffect, useState} from "react";
 
 export const Ping = () => {
+
     let timeOutId;
 
     useEffect(() => {
@@ -10,7 +11,7 @@ export const Ping = () => {
 
     const [timerId, setTimerId] = useState(1);
     const [inputValue, setInputValue] = useState('')
-    const [result, setResult] = useState(0)
+    const [results, setResult] = useState([])
     const [error, setError] = useState('')
 
     const onChangeHandler = (e) => {
@@ -23,7 +24,6 @@ export const Ping = () => {
     }
 
     const onClickHandler = async (e) => {
-
         const objRE = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
         if (objRE.test(inputValue)) {
@@ -39,18 +39,19 @@ export const Ping = () => {
                 console.log(`ошибка при обращении к серверу ${inputValue}. Проверте правильность введенных данных`)
             } finally {
                 let finishDate = new Date();
-                setResult(finishDate - startDate);
+                setResult((prevState) => [finishDate - startDate, ...prevState]);
                 timeOut()
             }
         } else {
             setError('Введите корректное значение URL')
         }
     }
+
     const onClearHandler = () => {
         setError('')
         clearTimeout(timerId)
         setInputValue('')
-        setResult(0)
+        setResult([])
     }
 
     return (
@@ -58,13 +59,19 @@ export const Ping = () => {
             <h2>Ping</h2>
             <div className={s.inputs}>
                 <input type="text" value={inputValue} onChange={onChangeHandler}/>
-                <button onClick={onClickHandler}>Пинг</button>
+                <button onClick={onClickHandler} disabled={results.length > 0}>Пинг</button>
             </div>
             <div className={s.results}>
-                {!error ? result !== 0 && <h4 className={s.result}>{result} мс</h4> :
-                    <h4 className={s.error}>{error}</h4>}
+                <div>
+                    {!error ? results.length > 0 &&
+                        results.map((el, index) => (
+                            <h4 key={index} className={s.result}>Ответ от {inputValue} время = {el} мс</h4>
+                        ))
+                        :
+                        <h4 className={s.error}>{error}</h4>}
+                </div>
+                <button onClick={onClearHandler}>Остановить</button>
             </div>
-            <button onClick={onClearHandler}>Остановить</button>
         </div>
     )
 }
